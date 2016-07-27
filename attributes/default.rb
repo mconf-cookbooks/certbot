@@ -1,0 +1,13 @@
+default['certbot']['bin']['user'] = "root"
+default['certbot']['bin']['group'] = "root"
+default['certbot']['bin']['mode'] = 0755
+default['certbot']['bin']['path'] = "/usr/local/bin/certbot-auto"
+default['certbot']['bin']['download_uri'] = "https://dl.eff.org/certbot-auto"
+default['certbot']['webroot'] = ""
+default['certbot']['standalone'] = true
+default['certbot']['domains'] = [ ]
+default['certbot']['post_hook'] = ""
+default['certbot']['cert_path'] = ""
+default['certbot']['chain_path'] = ""
+default['certbot']['fullchain_path'] = ""
+default['certbot']['key_path'] = ""
