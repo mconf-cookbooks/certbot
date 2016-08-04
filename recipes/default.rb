@@ -56,7 +56,10 @@ ruby_block "create symlinks" do
       FileUtils.mkdir_p File.dirname(dst)
       letsencrypt_certs = Dir.glob("/etc/letsencrypt/live/*").map{ |d| File.basename(d) }
       intersection = domains & letsencrypt_certs
-      FileUtils.ln_s "/etc/letsencrypt/live/#{intersection.first}/#{src}", dst if ! intersection.empty?
+      if !intersection.empty?
+        FileUtils.rm_f dst
+        FileUtils.ln_s "/etc/letsencrypt/live/#{intersection.first}/#{src}", dst
+      end
     end
   end
   action :run
