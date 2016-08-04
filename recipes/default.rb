@@ -39,8 +39,8 @@ renew_cmd << "--no-self-upgrade"
 renew_cmd << "--quiet"
 
 cron "auto renew let's encrypt certificate" do
-  hour [ Random.new.rand(0..11) ].map{ |n| [n, n+12] }.join(",")
-  minute Random.new.rand(0..59).to_s
+  hour node['certbot']['schedule']["hour"]
+  minute node['certbot']['schedule']["minute"]
   command renew_cmd.join(" ")
 end
 
@@ -56,7 +56,7 @@ ruby_block "create symlinks" do
       FileUtils.mkdir_p File.dirname(dst)
       letsencrypt_certs = Dir.glob("/etc/letsencrypt/live/*").map{ |d| File.basename(d) }
       intersection = domains & letsencrypt_certs
-      FileUtils.ln_s "/etc/letsencrypt/live/#{intersection.first}/#{src}", dst if ! intersection.empty?
+      FileUtils.ln_s "/etc/letsencrypt/live/#{intersection.first}/#{src}", dst, force: true if ! intersection.empty?
     end
   end
   action :run
