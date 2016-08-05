@@ -30,13 +30,15 @@ execute "install certbot" do
   action :run
 end
 
-renew_cmd = [ node['certbot']['bin']['path'], "renew" ]
+renew_cmd = [ "PATH=\"/sbin:/bin:$PATH\"", node['certbot']['bin']['path'], "renew" ]
 renew_cmd << "--standalone" if node['certbot']['standalone']
 renew_cmd << "--webroot #{node['certbot']['webroot']}" if node['certbot']['webroot'].to_s != ''
 renew_cmd << "--pre-hook \"#{node['certbot']['pre_hook']}\"" if node['certbot']['pre_hook'].to_s != ''
 renew_cmd << "--post-hook \"#{node['certbot']['post_hook']}\"" if node['certbot']['post_hook'].to_s != ''
 renew_cmd << "--no-self-upgrade"
-renew_cmd << "--quiet"
+renew_cmd << "--non-interactive"
+renew_cmd << "> #{node['certbot']['log']} 2>&1"
+Chef::Log.info "Configuring cron to run: #{renew_cmd.join(" ")}"
 
 cron "auto renew let's encrypt certificate" do
   hour node['certbot']['schedule']["hour"]
