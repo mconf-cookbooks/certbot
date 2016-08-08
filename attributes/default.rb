@@ -4,6 +4,8 @@ default['certbot']['bin']['mode'] = 0755
 default['certbot']['bin']['path'] = "/usr/local/bin/certbot-auto"
 default['certbot']['bin']['download_uri'] = "https://dl.eff.org/certbot-auto"
 
+default['certbot']['log'] = "/var/log/certbot-auto.log"
+
 # if true, will use certbot's standalone server, otherwise will use webroot
 default['certbot']['standalone'] = true
 
