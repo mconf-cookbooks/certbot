@@ -16,6 +16,7 @@ end
 
 cmd = [ node['certbot']['bin']['path'], "certonly", "--non-interactive", "--register-unsafely-without-email", "--agree-tos", "--expand" ]
 cmd << "--standalone" if node['certbot']['standalone']
+cmd << "--webroot" if ! node['certbot']['standalone']
 cmd << "--webroot-path #{node['certbot']['webroot']}" if node['certbot']['webroot'].to_s != ''
 cmd << "--pre-hook \"#{node['certbot']['pre_hook']}\"" if node['certbot']['pre_hook'].to_s != ''
 cmd << "--post-hook \"#{node['certbot']['post_hook']}\"" if node['certbot']['post_hook'].to_s != ''
@@ -32,7 +33,8 @@ end
 
 renew_cmd = [ "PATH=\"/sbin:/bin:$PATH\"", node['certbot']['bin']['path'], "renew" ]
 renew_cmd << "--standalone" if node['certbot']['standalone']
-renew_cmd << "--webroot #{node['certbot']['webroot']}" if node['certbot']['webroot'].to_s != ''
+renew_cmd << "--webroot" if ! node['certbot']['standalone']
+renew_cmd << "--webroot-path #{node['certbot']['webroot']}" if node['certbot']['webroot'].to_s != ''
 renew_cmd << "--pre-hook \"#{node['certbot']['pre_hook']}\"" if node['certbot']['pre_hook'].to_s != ''
 renew_cmd << "--post-hook \"#{node['certbot']['post_hook']}\"" if node['certbot']['post_hook'].to_s != ''
 renew_cmd << "--no-self-upgrade"
