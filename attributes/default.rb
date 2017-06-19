@@ -24,8 +24,11 @@ default['certbot']['post_hook'] = ""
 default['certbot']['cert_path'] = ""
 default['certbot']['chain_path'] = ""
 default['certbot']['fullchain_path'] = ""
+default['certbot']['fullchain_key_path'] = ""
 default['certbot']['key_path'] = ""
 
 # two random hours of the day at any random minute within it
 default['certbot']['schedule']["hour"] = [ Random.new.rand(0..11) ].map{ |n| [n, n+12] }.join(",")
 default['certbot']['schedule']["minute"] = Random.new.rand(0..59).to_s
+
+default['certbot']['gen-fullchain-key']['path'] = "/usr/local/bin/gen-fullchain-key.rb"
